@@ -6,7 +6,7 @@
 import VictoryModal from "../../components/VictoryModal.svelte";
 import CountdownTimer from "../../components/CountdownTimer.svelte";
 
-  const socket = new WebSocket("ws://type-god-server.herokuapp.com/ws");
+  const socket = new WebSocket("wss://type-god-server.herokuapp.com/ws");
   let winner = null
   let self
   let text = null;
