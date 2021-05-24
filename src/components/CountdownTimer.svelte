@@ -1,10 +1,14 @@
 <script>
   import { onDestroy } from "svelte";
   export let shouldStartCountdown = true;
+  export let isInputDisabled
   let counter = 5;
   const interval = setInterval(() => {
     counter--;
-    if (counter === 0) shouldStartCountdown = false;
+    if (counter === 0) {
+      shouldStartCountdown = false;
+      isInputDisabled = false
+    }
   }, 1000);
 
   onDestroy(() => {

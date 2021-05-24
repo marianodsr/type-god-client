@@ -6,7 +6,7 @@
 import VictoryModal from "../../components/VictoryModal.svelte";
 import CountdownTimer from "../../components/CountdownTimer.svelte";
 
-  const socket = new WebSocket("ws://localhost:8080/ws");
+  const socket = new WebSocket("ws://type-god-server.herokuapp.com/ws");
   let winner = null
   let self
   let text = null;
@@ -21,6 +21,7 @@ import CountdownTimer from "../../components/CountdownTimer.svelte";
     wpm: 0
   }
   let shouldStartCountdown = false
+  let isInputDisabled = true
 
   const setFinalStats = () => {
       finalStats.minutes = minutes
@@ -65,7 +66,7 @@ import CountdownTimer from "../../components/CountdownTimer.svelte";
 </script>
 
 {#if text}
-<CountdownTimer {shouldStartCountdown}/>
+<CountdownTimer {shouldStartCountdown} bind:isInputDisabled={isInputDisabled}/>
 <VictoryModal {winner} {self} {finalStats}/>
   <div class="container">
     <div class="player-bar-container">
@@ -80,7 +81,7 @@ import CountdownTimer from "../../components/CountdownTimer.svelte";
       {/each}
     </div>
     <div class="typer-container">
-      <Typer {text} {sendMessage} bind:wordCount={wordCount}/>
+      <Typer {text} {sendMessage} bind:wordCount={wordCount} {isInputDisabled}/>
     </div>
     <StatsMeter {wordCount} bind:minutes={minutes} bind:seconds={seconds} bind:wpm={wpm}/>
     

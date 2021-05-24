@@ -1,16 +1,19 @@
 <script>
-  
   export let text = "";
   export let sendMessage;
   export let wordCount;
+  export let isInputDisabled
   let inputText = "";
   let doneText = "";
   let error = false;
   let offset = 0;
+
+
   // The bear roars
   // OFFSET  0  0 0  0
   // INPUT   '' T Th The
   // DT      '' T Th The
+
 
   const evaluateText = (input, text) => {
     if (input.length <= 0) return;
@@ -25,7 +28,7 @@
 
     doneText = doneText.concat(input[input.length - 1]);
     error = false;
-
+ 
     if (input[input.length - 1] === " ") {
       //Word break
       offset += input.length;
@@ -61,7 +64,7 @@
     </p>
   </div>
 
-  <input type="text" bind:value={inputText} />
+  <input type="text" bind:value={inputText} disabled={isInputDisabled} />
 </div>
 
 
