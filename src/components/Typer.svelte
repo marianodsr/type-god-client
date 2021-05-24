@@ -1,17 +1,47 @@
 <script>
-  let text = `As she sat watching the world go by, something caught her eye. It wasn't so much its color or shape, but the way it was moving. She squinted to see if she could better understand what it was and where it was going, but it didn't help. As she continued to stare into the distance, she didn't understand why this uneasiness was building inside her body. She felt like she should get up and run. If only she could make out what it was. At that moment, she comprehended what it was and where it was heading, and she knew her life would never be the same.`;
+  
+  export let text = "";
+  export let sendMessage;
+  export let wordCount;
   let inputText = "";
   let doneText = "";
   let error = false;
+  let offset = 0;
+  // The bear roars
+  // OFFSET  0  0 0  0
+  // INPUT   '' T Th The
+  // DT      '' T Th The
 
   const evaluateText = (input, text) => {
+    if (input.length <= 0) return;
     length = input.length;
-    if (input !== text.substr(0, length)) {
+    if (input !== text.substr(offset, length)) {
       error = true;
       return;
     }
-    doneText = input;
+    const doneWords = doneText.split(" ");
+    const lastWord = doneWords[doneWords.length - 1];
+    if (length <= lastWord.length) return;
+
+    doneText = doneText.concat(input[input.length - 1]);
     error = false;
+
+    if (input[input.length - 1] === " ") {
+      //Word break
+      offset += input.length;
+      inputText = "";
+      wordCount++;
+      console.log(wordCount);
+    }
+
+    sendMessage(
+      JSON.stringify({
+        event: "PROGRESS_ADVANCE",
+        data: {
+          doneText: doneText,
+        },
+      })
+    );
   };
 
   const checkForWin = (doneText, text) => {
@@ -32,26 +62,42 @@
   </div>
 
   <input type="text" bind:value={inputText} />
-
-  <div class="result" class:error />
 </div>
+
+
 
 <style>
   .container {
     display: flex;
+    max-height: 100%;
     flex-direction: column;
     align-items: center;
   }
   .text-container {
-    border: 1px solid black;
+    border: 1px solid var(--gray);
     padding: 1rem;
     overflow-wrap: break-word;
+    width: 90%;
+    color: var(--gray);
+    font-size: 1.2rem;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
 
   input {
     padding: 0.3rem;
     margin: 3rem auto;
-    width: 80%;
+    width: 90%;
+    font-size: 1.2rem;
+    background-color: var(--linen);
+    border: var(--gray) 1px solid;
+    color: var(--gray);
+  }
+  input:focus {
+    outline: none;
   }
 
   .result {
@@ -60,7 +106,8 @@
     background-color: rgb(83, 255, 98);
   }
   .next-letter {
-    background-color: rgb(233, 190, 190);
+    background-color: var(--light-purple);
+    color: white;
   }
 
   .error {
@@ -68,6 +115,6 @@
   }
 
   .done-text {
-    color: red;
+    color: var(--light-purple);
   }
 </style>

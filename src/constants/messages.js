@@ -1,0 +1,4 @@
+export const PROGRESS_ADVANCE = "PROGRESS_ADVANCE";
+export const START_GAME = "START_GAME";
+export const INITIALIZATION = "INITIALIZATION"
+export const VICTORY = "VICTORY"

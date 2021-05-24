@@ -1,2 +1,7 @@
-<!-- routify:options preload="proximity" -->
-<slot />
+<script>
+    import { metatags } from '@roxi/routify'
+    metatags.title = 'Type god'
+    metatags.description = 'Description coming soon...'
+</script>
+
+<slot/>
