@@ -1,12 +1,14 @@
 <script>
   import Typer from "../../components/Typer.svelte";
   import StatsMeter from "../../components/StatsMeter.svelte";
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import { INITIALIZATION, START_GAME, PROGRESS_ADVANCE, VICTORY } from '../../constants/messages'
 import VictoryModal from "../../components/VictoryModal.svelte";
 import CountdownTimer from "../../components/CountdownTimer.svelte";
 
-  const socket = new WebSocket("wss://type-god-server.herokuapp.com/ws");
+const URL = "wss://type-god-server.herokuapp.com/ws"
+
+  const socket = new WebSocket(URL);
   let winner = null
   let self
   let text = null;
@@ -22,6 +24,10 @@ import CountdownTimer from "../../components/CountdownTimer.svelte";
   }
   let shouldStartCountdown = false
   let isInputDisabled = true
+  let startCounter = 15
+  const startInterval = setInterval(() => {
+      startCounter--
+    }, 1000);
 
   const setFinalStats = () => {
       finalStats.minutes = minutes
@@ -56,7 +62,11 @@ import CountdownTimer from "../../components/CountdownTimer.svelte";
 
       }
     });
+
+
   });
+
+  onDestroy(() => clearInterval(startInterval))
 
   const sendMessage = (msg) => {
     socket.send(msg);
@@ -90,7 +100,7 @@ import CountdownTimer from "../../components/CountdownTimer.svelte";
   <div class="spinner-container">
     <img src="images/spinner.svg" alt="spinner">
     <span>Looking for a room...</span>
-
+    <span>Game will start automatically in {startCounter}</span>
   </div>
 {/if}
 

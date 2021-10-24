@@ -2,7 +2,7 @@
   import { onDestroy } from "svelte";
   export let shouldStartCountdown = true;
   export let isInputDisabled
-  let counter = 5;
+  export  let counter = 5;
   const interval = setInterval(() => {
     counter--;
     if (counter === 0) {
